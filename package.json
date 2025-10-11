@@ -1,0 +1,18 @@
+{
+  "name": "journee_backend",
+  "version": "1.0.0",
+  "description": "Journee is a full-stack web application that reimagines the concept of digital storytelling as a personal online diary, allowing users to document their thoughts, reflections, and daily experiences in a secure and user-friendly environment.",
+  "license": "ISC",
+  "author": "Ismael",
+  "type": "commonjs",
+  "main": "server.mjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.mjs",
+    "dev": "nodemon server.mjs"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0"
+  }
+}
