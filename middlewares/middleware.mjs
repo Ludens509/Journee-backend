@@ -3,7 +3,6 @@ export function globalErr(err,_req,res,next){
     next()
 }
 
-export function log(req,_res,next){
+export function log(req,_res,_next){
     console.log(`${req.methof} - ${req.path}`)
-    next()
 }
