@@ -5,7 +5,16 @@ const postSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User", //Reference to the User Model
         required: true,
-        unique: true,
+        
+        validate: {
+        validator: async function (userId) {
+          const user = await mongoose.models.User.findById({ _id: userId });
+          return !!user; // if user exists continue, else throw error
+        },
+        message: (props) =>
+          `This user with ${props.path}:${props.value} does not exist`,
+      },
+       index: true, //Simple single key index
     },
     title: {
         type: String,
@@ -19,6 +28,7 @@ const postSchema = new mongoose.Schema({
         type: Boolean,
         default: true,      // default: private diary entry
     },
+    
 },
     { timestamps: true }
 );

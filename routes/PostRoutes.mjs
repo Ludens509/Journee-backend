@@ -30,7 +30,7 @@ router.route("/user/:userId").get(postCTRL.getPostByUser);
 
 
 //Update post by Id-----------------------------------------------
-//@route /api/post/:id
+//@route /api/posts/:id
 // @desc PUT update a post
 router.route('/:id').put(postCTRL.updatePostById)
 
