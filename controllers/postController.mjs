@@ -1,35 +1,35 @@
 // import express from 'express';
-// import Post from '../../models/postModel.mjs';
-// import User from '../../models/userModel.mjs';
+import Post from "../models/postModel.mjs";
+import User from '../models/userModel.mjs';
 
 
 
 // Create New Question -------------------------------------------
-let createNewPost =  (req, res) => {
-        // try {
-        //     const { userId, title, content } = req.body;
+let createNewPost = async (req, res) => {
+        try {
+            const { userId, title, content } = req.body;
 
-        //     if (userId || title || content) {
-        //         return res.status(400).json({
-        //             msg: `Fields "userId", "title", "content" are required`,
-        //         })
-        //     }
+            if (!userId || !title || !content) {
+                return res.status(400).json({
+                    msg: `Fields "userId", "title", "content" are required`,
+                })
+            }
 
-        //     const user = await User.findById(userId);
+            const user = await User.findById(userId);
 
-        //     if (!user) {
-        //         return res.status(404).json({
-        //             msg: `The userId with "${userId}" does not exist`
-        //         });
-        //     }
+            if (!user) {
+                return res.status(404).json({
+                    msg: `The userId with "${userId}" does not exist`
+                });
+            }
 
-        //     const post = await Post.create(req.body);
+            const post = await Post.create(req.body);
 
-        //     res.status(201).json(post);
-        // } catch (err) {
-        //     console.log(`❌ Error :`, error.message);
-        //     res.status(500).json({ msg: `Error - ${err.message}` })
-        // }
+            res.status(201).json(post);
+        } catch (err) {
+            console.log(`❌ Error :`, error.message);
+            res.status(500).json({ msg: `Error - ${err.message}` })
+        }
         res.send("Create a post fine with me!!");
     }
 
