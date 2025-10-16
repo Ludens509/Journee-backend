@@ -2,6 +2,7 @@
 import express from "express";
 import Post from "../models/postModel.mjs"
 import postCTRL from "../controllers/postController.mjs";
+import { protect } from "../middlewares/basicAuth.mjs";
 
 const router = express.Router();
 
@@ -13,9 +14,9 @@ const router = express.Router();
 //@route register a post
 //@access Public
 router.route("/").post(
-    postCTRL.createNewPost)
+    protect, postCTRL.createNewPost)
 
-//Get All posts-------------------------------------------------
+    //Get All posts-------------------------------------------------
     //@route GET /api/posts
     //@desc Get all posts
     //@access Public
@@ -32,21 +33,21 @@ router.route("/user/:userId").get(postCTRL.getPostByUser);
 //Update post by Id-----------------------------------------------
 //@route /api/posts/:id
 // @desc PUT update a post
-router.route('/:id').put(postCTRL.updatePostById)
+router.route('/:id').put(protect, postCTRL.updatePostById)
 
 
-//Delete post by Id---------------------------------------------
+    //Delete post by Id---------------------------------------------
     //@route /api/posts
     // @desc delete a post
     //@Access Public
 
-    .delete(postCTRL.deletePostById);
+    .delete(protect, postCTRL.deletePostById);
 
 //Delete post by User--------------------------------------------
 //@route /api/posts/user/:userId
 // @desc delete a post bu user
 //@Access Public
-router.route('/user/:userId').delete(postCTRL.deletePostByUser);
+router.route('/user/:userId').delete(protect, postCTRL.deletePostByUser);
 
 
 export default router;
