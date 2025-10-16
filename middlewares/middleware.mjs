@@ -1,5 +1,5 @@
 export function globalErr(err,_req,res,_next){
-    res.status(500).json({msg: `❌ Error - ${err.message}` });
+    res.status(500 || err.status).json({msg: `❌ Error - ${err.message}` });
    
 }
 
