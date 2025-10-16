@@ -6,8 +6,8 @@ const router = Router();
 
 router.route("/").post(
     [
-        check("userName", "Please include a valid username").isLength({ min: 4 }),
-        check("password", "password must be at least 6 characters long").isLength({min:4}),
+        check("username", "Please include a valid username").isLength({ min: 4 }),
+        check("password", "password must be at least 4 characters long").isLength({min:4}),
         check("email", "Please include a valid email").isEmail(),
     ],
     userCTRL.registerUser)
