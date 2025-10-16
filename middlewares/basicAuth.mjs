@@ -10,12 +10,12 @@ const protect =  (req, res, next)=> {
         return res.status(401).json({ errors: [{ msg: "No Token,Auth denied" }] });
 
         try {
-            const decoded = jwt.verify(token, process.env.jwSecret);
+            const decoded = jwt.verify(token, process.env.jwtSecret);
 
-            req.user = decoded.user;
+            req.user = decoded.user; //this is user ID
             next();
         } catch (err) {
-            console.err(err.message);
+            console.error(err.message);
             res.status(401).json({ errors: [{ msg: "Authentication Failed" }] });
         }
     

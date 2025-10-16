@@ -1,6 +1,8 @@
 import { Router } from "express";
 import { check } from "express-validator";
-import userCTRL from "../controllers/userController.mjs"
+import userCTRL from "../controllers/userController.mjs";
+
+//Auth middleware
 import { protect } from "../middlewares/basicAuth.mjs";
 
 const router = Router();

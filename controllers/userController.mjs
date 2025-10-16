@@ -44,7 +44,7 @@ const registerUser = async (req, res) => {
             },
         }
 
-        jwt.sign(payload, process.env.jsonSecret, { expiresIn: "6h" }, (err, token) => {
+        jwt.sign(payload, process.env.jwtSecret, { expiresIn: "6h" }, (err, token) => {
             if (err) throw err;
 
             res.status(201).json({ token });
@@ -89,7 +89,7 @@ const loginUser = async (req, res) => {
         const isMatch = await bcrypt.compare(password, user.password)
 
         if (!isMatch) {
-            return res.status(400).json({errors: [{ msg: "Invalid Credentials" }]})
+            return res.status(400).json({ errors: [{ msg: "Invalid Credentials" }] })
         }
 
         const payload = {
@@ -107,7 +107,7 @@ const loginUser = async (req, res) => {
             }
         );
 
-    } catch (error) {
+    } catch (err) {
         console.error(`Error - ${err.message}`);
         res.status(500).json({ msg: `Error - ${err.message}` });
 
