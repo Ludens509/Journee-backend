@@ -17,9 +17,13 @@ const PORT = process.env.VITE_PORT || 3001;
 connectDB()
 
 //Middleware
+app.use(cors());
 app.use(express.json());
 app.use(log);
-app.use(cors());
+
+//To test API .data send to browser
+app.get("/",(req,res)=>res.send("API running..."))
+
 
 //Routes
 app.use("/api/posts", postRoutes);

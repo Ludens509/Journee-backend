@@ -32,7 +32,6 @@ const registerUser = async (req, res) => {
             password,
         });
 
-
         const salt = await bcrypt.genSalt(10);
         user.password = await bcrypt.hash(user.password, salt);
 
@@ -83,7 +82,7 @@ const loginUser = async (req, res) => {
         let user = await User.findOne({ email });
 
         if (!user) {
-            return res.status(400), json({ errors: [{ msg: "Invalid Credentials" }] })
+            return res.status(400).json({ errors: [{ msg: "Invalid Credentials" }] });
         }
 
         const isMatch = await bcrypt.compare(password, user.password)
@@ -99,11 +98,14 @@ const loginUser = async (req, res) => {
         };
 
         jwt.sign(
-            payload, process.env.jwtSecret, { expiresIn: "6h" },
+            payload,
+            process.env.jwtSecret,
+            { expiresIn: "6h" },
             (err, token) => {
                 if (err) throw err;
 
-                res.status(201).json(token);
+                // return token as an object to match register response: { token }
+                res.status(201).json({ token });
             }
         );
 
