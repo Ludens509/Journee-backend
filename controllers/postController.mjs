@@ -3,7 +3,9 @@ import Post from "../models/postModel.mjs";
 import User from '../models/userModel.mjs';
 
 
-
+//@route POST /api/posts
+//@route register a post
+//@access Public
 // Create New Question -------------------------------------------
 let createNewPost = async (req, res) => {
     try {
@@ -24,12 +26,17 @@ let createNewPost = async (req, res) => {
         // }
 
         const post = await Post.create({
-            user,         // 👈 manually provided for now
-            title,
-            content,
-            
+            // user,         // 👈 manually provided for now
+            // title,
+            // content,
+            user: req.user._id,
+            title: req.body.title,
+            content: req.body.content,
+            isPrivate: req.body.isPrivate || true,
+
             new: true, //return the updated document
             runValidators: true,
+
         }
         );
 
@@ -43,7 +50,7 @@ let createNewPost = async (req, res) => {
 
 
 //Get all posts---------------------------------------------------
-let getAllPosts = async(req, res) => {
+let getAllPosts = async (req, res) => {
     try {
         const getAllPosts = await Post.find({});
         if (getAllPosts.length == 0) {
@@ -58,25 +65,27 @@ let getAllPosts = async(req, res) => {
 
 //Get Post by user-----------------------------------------------
 
-let getPostByUser = async(req, res) => {
+let getPostByUser = async (req, res) => {
     try {
-        const userId = req.params.userId;
+        // const userId = req.user._id;
 
-        if (!userId) {
-            return res.status(400).json({
-                msg: `The user param userId is missing`,
-            });
-        }
+        // if (!userId) {
+        //     return res.status(400).json({
+        //         msg: `The user param userId is missing`,
+        //     });
+        // }
 
-        const posts = await Post.find({ user: userId }).sort({createdAt: -1});
+        // const posts = await Post.find({ user: userId }).sort({ createdAt: -1 });
 
-        if(posts.length ==0){
-             return res.status(400).json({
-                msg: `post not found`,
-            });
-        }
+        // if (posts.length == 0) {
+        //     return res.status(400).json({
+        //         msg: `post not found`,
+        //     });
+        // }
+    const posts = await Post.find({ user: req.user._id }).sort({ createdAt: -1 });
 
-        res.status(201).json(posts);
+    // return posts (OK)
+    return res.status(200).json(posts);
     } catch (err) {
         console.error(`❌ Error :`, err.message);
         res.status(500).json({ msg: `Error - ${err.message}` });
@@ -85,46 +94,58 @@ let getPostByUser = async(req, res) => {
 
 
 //Update post by Id-----------------------------------------------
-let updatePostById = async(req, res) => {
+let updatePostById = async (req, res) => {
 
     try {
         const postId = req.params.id;
-        const {user,title,content} = req.body;
+
+        const post = await Post.findById(postId);
+
+        if (!post || post.user.toString() !== req.user._id.toString()) {
+            return res.status(401).json({ message: "Not authorized" });
+        }
+
+        post.title = req.body.title || post.title;
+        post.content = req.body.content || post.content;
+        const updatePost = await post.save();
+
+        // res.json(updated);
+
+        // const { user, title, content } = req.body;
         //const updatePost = await Post.findByIdAndUpdate(
-         //   postId,
-         //    req.body, //{
+        //   postId,
+        //    req.body, //{
         //     new: true, //return the updated document
         //     runValidators: true,
         // }//enables schema validation when updating documents, its false by default
         //);
 
-         // Check if another post has the same title (excluding current post)
-            const existingPost = await Post.findOne({
-                title: title,
-                _id: { $ne: postId }
-            });
+        // Check if another post has the same title (excluding current post)
+        // const existingPost = await Post.findOne({
+        //     title: title,
+        //     _id: { $ne: postId }
+        // });
 
-            if (existingPost) {
-                return res.status(400).json({
-                    success: false,
-                    message: "A post with this title already exists"
-                });
-            }
-             let updatePost = await Post.findByIdAndUpdate(
-                postId, {
-                 user:user,   
-                title: title,
-                content: content,  
-            },
-                {
-                    new: true,
-                    runValidators: true
-                }
-            );
+        // if (existingPost) {
+        //     return res.status(400).json({
+        //         success: false,
+        //         message: "A post with this title already exists"
+        //     });
+        // }
+        // let updatePost = await Post.findByIdAndUpdate(
+        //     postId, {
+        //     user: user,
+        //     title: title,
+        //     content: content,
+
+        //         new: true,
+        //         runValidators: true
+        //     }
+        // );
         //if Post exist
-        if (!updatePost) {
-            return res.status(400).json({ message: `Post not found` });
-        }
+        // if (!updatePost) {
+        //     return res.status(400).json({ message: `Post not found` });
+        // }
 
         res.status(201).json(updatePost);
 
@@ -136,7 +157,7 @@ let updatePostById = async(req, res) => {
 
 
 //Detele post by Id--------------------------------------
-let deletePostById = async(req, res) => {
+let deletePostById = async (req, res) => {
     try {
         const deletePost = await Post.findByIdAndDelete(req.params.id)
         console.log("Post deleted successfully:", deletePost);
@@ -152,7 +173,7 @@ let deletePostById = async(req, res) => {
     }
 }
 
-let deletePostByUser = async(req, res) => {
+let deletePostByUser = async (req, res) => {
     try {
 
         const deletePostByUser = await Post.findByIdAndDelete({
@@ -171,7 +192,7 @@ let deletePostByUser = async(req, res) => {
         console.error(`❌ Error :`, err.message);
         res.status(500).json({ msg: `Error - ${err.message}` });
     }
-   
+
 
 }
 
