@@ -27,7 +27,7 @@ router.route("/").post(
 //@route: /api/posts/user/:userId
 //@desc: GET posts by user
 //@access: Public
-router.route("/user/:userId").get(postCTRL.getPostByUser);
+router.route("/user/:userId").get(protect, postCTRL.getPostByUser);
 
 
 //Update post by Id-----------------------------------------------
