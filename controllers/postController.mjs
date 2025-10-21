@@ -9,13 +9,13 @@ import User from '../models/userModel.mjs';
 // Create New Question -------------------------------------------
 let createNewPost = async (req, res) => {
     try {
-        const { user, title, content } = req.body;
+        // const { user, title, content } = req.body;
 
-        if (!user || !title || !content) {
-            return res.status(400).json({
-                msg: `Fields "user", "title", "content" are required`,
-            })
-        }
+        // if (!user || !title || !content) {
+        //     return res.status(400).json({
+        //         msg: `Fields "user", "title", "content" are required`,
+        //     })
+        // }
 
         // const userExist = await User.findById(user);
 
@@ -196,10 +196,34 @@ let deletePostByUser = async (req, res) => {
 
 }
 
+
+
+// Get single post by id----------------------------------------
+let getPostById = async (req, res) => {
+    try {
+        const postId = req.params.id;
+
+        if (!postId) {
+            return res.status(400).json({ msg: "Post id is required" });
+        }
+
+        const post = await Post.findById(postId).select("-__v");
+
+        if (!post) {
+            return res.status(404).json({ msg: "Post not found" });
+        }
+
+        return res.status(200).json(post);
+    } catch (err) {
+        console.error(`❌ Error :`, err.message);
+        return res.status(500).json({ msg: `Error - ${err.message}` });
+    }
+}
 export default {
     getAllPosts,
     createNewPost,
     getPostByUser,
+    getPostById,
     updatePostById,
     deletePostById,
     deletePostByUser,

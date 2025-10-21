@@ -29,11 +29,20 @@ router.route("/").post(
 //@access: Public
 router.route("/user/:userId").get(protect, postCTRL.getPostByUser);
 
+//Get posts by Id----------------------------------------------
+//@route: /api/posts/:id
+//@desc: GET posts by id
+//@access: Public
+router.route('/:id').get(protect, postCTRL.getPostById);
+
 
 //Update post by Id-----------------------------------------------
-//@route /api/posts/:id
+//@route /api/posts/:id/edit
 // @desc PUT update a post
-router.route('/:id').put(protect, postCTRL.updatePostById)
+// Get single post by id
+
+
+router.route('/:id/edit').put(protect, postCTRL.updatePostById)
 
 
     //Delete post by Id---------------------------------------------
