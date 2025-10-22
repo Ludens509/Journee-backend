@@ -48,15 +48,13 @@ router.route('/:id/edit').put(protect, postCTRL.updatePostById)
     //Delete post by Id---------------------------------------------
     //@route /api/posts
     // @desc delete a post
-    //@Access Public
 
-    .delete(protect, postCTRL.deletePostById);
+router.route('/:id/edit').put(protect, postCTRL.updatePostById);
 
-//Delete post by User--------------------------------------------
-//@route /api/posts/user/:userId
-// @desc delete a post bu user
-//@Access Public
-router.route('/user/:userId').delete(protect, postCTRL.deletePostByUser);
-
+//Delete post by Id---------------------------------------------
+//@route DELETE /api/posts/:id
+//@desc delete a post
+//@access Private
+router.route('/:id').delete(protect, postCTRL.deletePostById);
 
 export default router;
