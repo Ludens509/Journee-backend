@@ -109,43 +109,7 @@ let updatePostById = async (req, res) => {
         post.content = req.body.content || post.content;
         const updatePost = await post.save();
 
-        // res.json(updated);
-
-        // const { user, title, content } = req.body;
-        //const updatePost = await Post.findByIdAndUpdate(
-        //   postId,
-        //    req.body, //{
-        //     new: true, //return the updated document
-        //     runValidators: true,
-        // }//enables schema validation when updating documents, its false by default
-        //);
-
-        // Check if another post has the same title (excluding current post)
-        // const existingPost = await Post.findOne({
-        //     title: title,
-        //     _id: { $ne: postId }
-        // });
-
-        // if (existingPost) {
-        //     return res.status(400).json({
-        //         success: false,
-        //         message: "A post with this title already exists"
-        //     });
-        // }
-        // let updatePost = await Post.findByIdAndUpdate(
-        //     postId, {
-        //     user: user,
-        //     title: title,
-        //     content: content,
-
-        //         new: true,
-        //         runValidators: true
-        //     }
-        // );
-        //if Post exist
-        // if (!updatePost) {
-        //     return res.status(400).json({ message: `Post not found` });
-        // }
+        
 
         res.status(201).json(updatePost);
 
@@ -176,17 +140,16 @@ let deletePostById = async (req, res) => {
 let deletePostByUser = async (req, res) => {
     try {
 
-        const deletePostByUser = await Post.findByIdAndDelete({
-            user: req.params.userId,
-        });
+    // Delete all posts that belong to the userId param
+    const result = await Post.deleteMany({ user: req.params.userId });
 
-        console.log("Post deleted successfully:", deletePostByUser);
+    console.log("Posts deleted for user:", req.params.userId, result);
 
-        res.json({
-            success: true,
-            message: "Post deleted successfully",
-            deletePostByUser
-        });
+    res.json({
+        success: true,
+        message: "Posts deleted successfully",
+        deletedCount: result.deletedCount,
+    });
 
     } catch (err) {
         console.error(`❌ Error :`, err.message);

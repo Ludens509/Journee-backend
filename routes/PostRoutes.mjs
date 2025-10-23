@@ -27,7 +27,9 @@ router.route("/").post(
 //@route: /api/posts/user/:userId
 //@desc: GET posts by user
 //@access: Public
-router.route("/user/:userId").get(protect, postCTRL.getPostByUser);
+// Allow getting posts by user and deleting all posts for a userId
+router.route("/user/:userId").get(protect, postCTRL.getPostByUser)
+.delete(protect, postCTRL.deletePostByUser);
 
 //Get posts by Id----------------------------------------------
 //@route: /api/posts/:id
@@ -42,7 +44,7 @@ router.route('/:id').get(protect, postCTRL.getPostById);
 // Get single post by id
 
 
-router.route('/:id/edit').put(protect, postCTRL.updatePostById)
+// router.route('/:id/edit').put(protect, postCTRL.updatePostById)
 
 
     //Delete post by Id---------------------------------------------

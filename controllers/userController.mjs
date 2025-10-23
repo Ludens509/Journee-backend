@@ -20,7 +20,7 @@ const registerUser = async (req, res) => {
         let user = await User.findOne({ email });
 
         if (user) {
-            res.status(400).json({ errors: [{ msg: "User Exists" }] })
+            return res.status(400).json({ errors: [{ msg: "User Exists" }] })
         }
 
         // const newUser = await User.create(req.body);
@@ -90,7 +90,7 @@ const loginUser = async (req, res) => {
         if (!isMatch) {
             return res.status(400).json({ errors: [{ msg: "Invalid Credentials" }] })
         }
-
+// console.log("id",user._id);
         const payload = {
             user: {
                 id: user._id,

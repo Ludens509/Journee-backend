@@ -30,7 +30,7 @@ dotenv.config();
 //Middleware when you need full user data
 export const protect =  async (req, res, next) => {
   const token = req.header("x-auth-token");
-
+ console.log(token);
   if (!token) {
     return res.status(401).json({ 
       message: "No token, authorization denied" 
@@ -39,14 +39,16 @@ export const protect =  async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.jwtSecret);
-    
+    console.log(decoded.user.id);
     // Import User model dynamically to avoid circular dependencies
     const { default: User } = await import("../models/userModel.mjs");
     
     // Fetch full user object from database
     const user = await User.findById(decoded.user.id).select("-password");
     
+
     if (!user) {
+      console.log("off-UTH");
       return res.status(401).json({ 
         message: "User not found" 
       });
