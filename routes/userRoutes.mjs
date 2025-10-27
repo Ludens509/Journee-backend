@@ -1,6 +1,6 @@
-import {Router} from "express";
-import {check} from "express-validator";
-import userCTRL from "../controllers/userController.mjs"
+import { Router } from "express";
+import { check } from "express-validator";
+import userCTRL from "../controllers/userController.mjs";
 
 const router = Router();
 

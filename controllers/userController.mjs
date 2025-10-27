@@ -1,8 +1,8 @@
-import User from "../models/userModel.mjs"
-import dotenv from "dotenv";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
 import { validationResult } from "express-validator";
+import jwt from "jsonwebtoken";
+import User from "../models/userModel.mjs";
 
 dotenv.config();
 

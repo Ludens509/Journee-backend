@@ -1,6 +1,5 @@
 
 import express from "express";
-import Post from "../models/postModel.mjs"
 import postCTRL from "../controllers/postController.mjs";
 import { protect } from "../middlewares/basicAuth.mjs";
 

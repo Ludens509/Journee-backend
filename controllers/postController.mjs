@@ -1,6 +1,5 @@
 // import express from 'express';
 import Post from "../models/postModel.mjs";
-import User from '../models/userModel.mjs';
 
 
 //@route POST /api/posts
