@@ -1,13 +1,10 @@
 
+
 import express from "express";
 import postCTRL from "../controllers/postController.mjs";
 import { protect } from "../middlewares/basicAuth.mjs";
 
 const router = express.Router();
-
-
-
-
 
 //@route POST /api/posts
 //@route register a post
@@ -30,27 +27,22 @@ router.route("/").post(
 router.route("/user/:userId").get(protect, postCTRL.getPostByUser)
 .delete(protect, postCTRL.deletePostByUser);
 
+//Update post by Id-----------------------------------------------
+//@route /api/posts/:id/edit
+// @desc PUT update a post
+router.route('/:id/edit').put(protect, postCTRL.updatePostById);
+
+//Like/Unlike post by Id---------------------------------------------
+//@route POST /api/posts/:id/like
+//@desc toggle like (isActive) on a post
+//@access Private
+router.route('/:id/like').post(protect, postCTRL.likePost);
+
 //Get posts by Id----------------------------------------------
 //@route: /api/posts/:id
 //@desc: GET posts by id
 //@access: Public
 router.route('/:id').get(protect, postCTRL.getPostById);
-
-
-//Update post by Id-----------------------------------------------
-//@route /api/posts/:id/edit
-// @desc PUT update a post
-// Get single post by id
-
-
-// router.route('/:id/edit').put(protect, postCTRL.updatePostById)
-
-
-    //Delete post by Id---------------------------------------------
-    //@route /api/posts
-    // @desc delete a post
-
-router.route('/:id/edit').put(protect, postCTRL.updatePostById);
 
 //Delete post by Id---------------------------------------------
 //@route DELETE /api/posts/:id

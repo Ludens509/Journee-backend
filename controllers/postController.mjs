@@ -181,6 +181,36 @@ let getPostById = async (req, res) => {
         return res.status(500).json({ msg: `Error - ${err.message}` });
     }
 }
+
+//Toggle Like (isActive)-----------------------------------------------
+let likePost = async (req, res) => {
+    try {
+        const postId = req.params.id;
+
+        if (!postId) {
+            return res.status(400).json({ msg: `Post ID is required` });
+        }
+
+        const post = await Post.findById(postId);
+
+        if (!post) {
+            return res.status(404).json({ msg: `Post not found` });
+        }
+
+        // Toggle the isActive field (like/unlike)
+        post.isActive = !post.isActive;
+        const updatedPost = await post.save();
+
+        res.status(200).json({
+            msg: post.isActive ? "Post liked" : "Post unliked",
+            post: updatedPost,
+        });
+    } catch (err) {
+        console.error(`❌ Error :`, err.message);
+        res.status(500).json({ msg: `Error - ${err.message}` });
+    }
+}
+
 export default {
     getAllPosts,
     createNewPost,
@@ -189,4 +219,5 @@ export default {
     updatePostById,
     deletePostById,
     deletePostByUser,
+    likePost,
 }

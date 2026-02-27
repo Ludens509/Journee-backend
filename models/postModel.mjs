@@ -24,9 +24,9 @@ const postSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    isPrivate: {
+    isActive: {
         type: Boolean,
-        default: true,      // default: private diary entry
+        default: false,     // default: not liked (like button starts as empty/outline)
     },
     
 },
